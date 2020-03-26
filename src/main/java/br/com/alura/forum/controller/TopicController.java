@@ -58,7 +58,7 @@ public class TopicController {
 
             dashboards.add(dto);
         }
-        
+
         return dashboards;
     }
 }
