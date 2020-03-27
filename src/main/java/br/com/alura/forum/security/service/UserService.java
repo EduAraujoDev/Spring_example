@@ -1,4 +1,4 @@
-package br.com.alura.forum.security;
+package br.com.alura.forum.security.service;
 
 import br.com.alura.forum.model.User;
 import br.com.alura.forum.repository.UserRepository;
