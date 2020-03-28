@@ -1,6 +1,8 @@
 package br.com.alura.forum.security.jwt;
 
 import br.com.alura.forum.model.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,5 +31,20 @@ public class TokenManager {
                 .setExpiration(new Date(now.getTime() + this.expirationInMillis))
                 .signWith(SignatureAlgorithm.HS256, this.secret)
                 .compact();
+    }
+
+    public boolean isValid(String jwt) {
+        try {
+            Jwts.parser().setSigningKey(this.secret).parseClaimsJws(jwt);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public Long getUserIdFromToken(String jwt) {
+        Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(jwt).getBody();
+
+        return Long.parseLong(claims.getSubject());
     }
 }
