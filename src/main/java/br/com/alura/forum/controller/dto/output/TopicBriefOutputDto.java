@@ -1,4 +1,4 @@
-package br.com.alura.forum.dto.output;
+package br.com.alura.forum.controller.dto.output;
 
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.model.topic.domain.TopicStatus;
