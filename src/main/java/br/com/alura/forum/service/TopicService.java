@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
+
 @Service
 public class TopicService {
 
@@ -38,5 +41,9 @@ public class TopicService {
                 newTopicInputDto.getContent(), loggedUser, course);
 
         return topicRepository.save(topic);
+    }
+
+    public List<Topic> findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(User loggerUser, Instant onehourAgo) {
+        return topicRepository.findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(loggerUser, onehourAgo);
     }
 }
