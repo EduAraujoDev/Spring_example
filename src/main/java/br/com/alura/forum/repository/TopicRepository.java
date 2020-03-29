@@ -37,4 +37,6 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
             + "JOIN subcategory.category category "
             + "WHERE category = :category AND topic.status = 'NOT_ANSWERED'")
     int countUnansweredTopicsByCategory(@Param("category") Category category);
+
+    Topic save(Topic topic);
 }
