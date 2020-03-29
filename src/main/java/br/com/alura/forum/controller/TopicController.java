@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -48,7 +49,7 @@ public class TopicController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TopicOutputDto> createTopic(@RequestBody NewTopicInputDto newTopicInputDto,
+    public ResponseEntity<TopicOutputDto> createTopic(@Valid  @RequestBody NewTopicInputDto newTopicInputDto,
                                       @AuthenticationPrincipal User loggedUser, UriComponentsBuilder uriBuilder) {
 
         Topic topic = topicService.createTopic(newTopicInputDto, loggedUser);
