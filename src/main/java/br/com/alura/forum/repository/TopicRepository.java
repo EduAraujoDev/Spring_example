@@ -18,6 +18,10 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
 
     List<Topic> findAll();
 
+    Topic save(Topic topic);
+
+    Topic findById(Long topicId);
+
     @Query("SELECT count(topic) FROM Topic topic "
             + "JOIN topic.course course "
             + "JOIN course.subcategory subcategory "
@@ -38,8 +42,6 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
             + "JOIN subcategory.category category "
             + "WHERE category = :category AND topic.status = 'NOT_ANSWERED'")
     int countUnansweredTopicsByCategory(@Param("category") Category category);
-
-    Topic save(Topic topic);
 
     List<Topic> findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(User loggerUser, Instant onehourAgo);
 }
