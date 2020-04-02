@@ -1,6 +1,7 @@
 package br.com.alura.forum.repository;
 
 import br.com.alura.forum.model.Category;
+import br.com.alura.forum.model.OpenTopicsByCategory;
 import br.com.alura.forum.model.User;
 import br.com.alura.forum.model.topic.domain.Topic;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -44,4 +45,12 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
     int countUnansweredTopicsByCategory(@Param("category") Category category);
 
     List<Topic> findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(User loggerUser, Instant onehourAgo);
+
+    @Query("select new br.com.alura.forum.model.OpenTopicsByCategory(" +
+            "t.course.subcategory.category.name as categoryName, " +
+            "count(t) as topicCount, " +
+            "now() as instant) from Topic t " +
+            "where t.status = 'NOT_ANSWERED' " +
+            "group by t.course.subcategory.category")
+    List<OpenTopicsByCategory> findOpenTopicsByCategory();
 }
