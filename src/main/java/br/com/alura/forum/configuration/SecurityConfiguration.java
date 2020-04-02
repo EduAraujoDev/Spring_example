@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/topics/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/admin/reports/**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .cors()
@@ -68,7 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 "/**.html", "/v2/api-docs",
                 "/webjars/**", "/configuration/**",
-                "/swagger-resources/**");
+                "/swagger-resources/**", "/css/**", "/**.ico", "/js/**");
     }
 
     @Override
