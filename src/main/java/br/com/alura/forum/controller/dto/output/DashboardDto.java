@@ -2,9 +2,12 @@ package br.com.alura.forum.controller.dto.output;
 
 import br.com.alura.forum.model.Category;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DashboardDto {
+public class DashboardDto implements Serializable {
+
+    private static final long serialVersionUID = -7876756501048830168L;
 
     private String categoryName;
     private List<String> subcategories;

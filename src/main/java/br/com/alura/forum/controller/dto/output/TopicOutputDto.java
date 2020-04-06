@@ -3,9 +3,12 @@ package br.com.alura.forum.controller.dto.output;
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.model.topic.domain.TopicStatus;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-public class TopicOutputDto {
+public class TopicOutputDto implements Serializable {
+
+    private static final long serialVersionUID = 7476679461424971654L;
 
     private Long id;
     private String shortDescription;

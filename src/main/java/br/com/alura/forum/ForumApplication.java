@@ -21,8 +21,8 @@ public class ForumApplication {
 		SpringApplication.run(ForumApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CacheManager cacheManager() {
 		return new ConcurrentMapCacheManager();
-	}
+	}*/
 }
