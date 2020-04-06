@@ -8,6 +8,7 @@ import br.com.alura.forum.model.User;
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.repository.TopicRepository;
 import br.com.alura.forum.service.NewReplayProcessorService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class AnswerController {
         this.newReplayProcessorService = newReplayProcessorService;
     }
 
-    @Cacheable(value = "topicsDetails", key = "#topicId")
+    @CacheEvict(value = "topicDetails", key = "#topicId")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AnswerOutputDto> answerTopic(@PathVariable Long topicId, @Valid @RequestBody NewAnswerInputDto newAnswerDto,
                                                        @AuthenticationPrincipal User lofferUser, UriComponentsBuilder uriBuilder) {
