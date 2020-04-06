@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificationExecutor<Topic> {
 
@@ -21,7 +22,7 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
 
     Topic save(Topic topic);
 
-    Topic findById(Long topicId);
+    Optional<Topic> findById(Long topicId);
 
     @Query("SELECT count(topic) FROM Topic topic "
             + "JOIN topic.course course "

@@ -10,6 +10,7 @@ import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.service.DashboardService;
 import br.com.alura.forum.service.TopicService;
 import br.com.alura.forum.validator.NewTopicCustomValidator;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -44,6 +45,7 @@ public class TopicController {
         return TopicBriefOutputDto.listFromTopics(topics);
     }
 
+    @Cacheable("dashboardData")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DashboardDto> dashboard() {
@@ -59,6 +61,12 @@ public class TopicController {
         return ResponseEntity
                 .created(uriBuilder.path("/api/topics/{id}").buildAndExpand(topic.getId()).toUri())
                 .body(new TopicOutputDto(topic));
+    }
+
+    @Cacheable(value = "topicDetails", key = "#id")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public TopicOutputDto getTopicDetails(@PathVariable Long id) {
+        return topicService.findById(id);
     }
 
     @InitBinder("newTopicInputDto")
