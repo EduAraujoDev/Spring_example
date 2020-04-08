@@ -66,7 +66,7 @@ public class TopicController {
     @Cacheable(value = "topicDetails", key = "#id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public TopicOutputDto getTopicDetails(@PathVariable Long id) {
-        return topicService.findById(id);
+        return new TopicOutputDto(topicService.findById(id));
     }
 
     @InitBinder("newTopicInputDto")

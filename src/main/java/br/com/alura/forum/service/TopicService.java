@@ -47,7 +47,7 @@ public class TopicService {
         return topicRepository.findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(loggerUser, onehourAgo);
     }
 
-    public TopicOutputDto findById(Long id) {
-        return new TopicOutputDto(topicRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
+    public Topic findById(Long id) {
+        return topicRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 }
