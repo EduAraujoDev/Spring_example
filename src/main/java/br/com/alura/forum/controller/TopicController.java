@@ -10,6 +10,7 @@ import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.service.DashboardService;
 import br.com.alura.forum.service.TopicService;
 import br.com.alura.forum.validator.NewTopicCustomValidator;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +19,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -67,6 +70,28 @@ public class TopicController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public TopicOutputDto getTopicDetails(@PathVariable Long id) {
         return new TopicOutputDto(topicService.findById(id));
+    }
+
+    @Transactional
+    @PostMapping(value = "/{id}/close")
+    @CacheEvict(value = "topicDetails", key = "#id")
+    public ResponseEntity<?> closeTopic(@PathVariable Long id, UriComponentsBuilder uriBuilder,
+                                           @AuthenticationPrincipal User loggerUser) {
+
+        Topic topic = topicService.findById(id);
+
+        if (loggerUser.isOwnerOf(topic) || loggerUser.isAdmin()) {
+            topic.close();
+
+            URI path = uriBuilder
+                    .path("/api/topics/{answerId}/solution")
+                    .buildAndExpand(topic.getId())
+                    .toUri();
+
+            return ResponseEntity.noContent().location(path).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem direito a acessar este recurso!");
     }
 
     @InitBinder("newTopicInputDto")
